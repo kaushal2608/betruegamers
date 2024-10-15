@@ -1,0 +1,40 @@
+// app/styles/Dashboard.module.scss
+
+.dashboardContainer {
+    padding: 2rem;
+    background-color: #fff;
+  }
+//   .Dashboard_welcome__e3pG9 {
+//     background-color: #f5f5f5;
+//     padding: 2rem;
+//     text-align: center;
+// }
+  
+  .welcome {
+    background-color: #f5f5f5;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .statsCard {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .chartCard {
+    padding: 1rem;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .tableCard {
+    padding: 1rem;
+    background-color: #fff;
+  }
+  
+  .icon {
+    vertical-align: middle;
+    color: #6366f1;
+  }
+  
