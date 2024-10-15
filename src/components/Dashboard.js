@@ -45,7 +45,7 @@ const Dashboard = () => {
           <Paper className={styles.welcome}>
             <Typography variant="h4">Welcome back, Lewis</Typography>
             <Typography variant="body1">
-              
+              Here’s what's changed in your talent hunt journey!
             </Typography>
           </Paper>
         </Grid>
