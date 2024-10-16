@@ -5,7 +5,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
  import { Roboto } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
-import { StoreProvider } from "@/storeprovider";
+import StoreProvider from "./storeprovider";
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],

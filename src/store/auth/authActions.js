@@ -9,13 +9,13 @@ import { USER_DATA } from './authTypes';
 
 
 // Thunk for getting pending workflow dashboard data
-export const login = () => async (dispatch) => {
+export const login = (data) => async (dispatch) => {
   dispatch(loadingShow(true));
   try {
     const response = await commonRequest(
       apiWithAuth,
       Route(routesMapping.auth.Login),
-      {},
+      data,
       'POST',
       {},
     );
@@ -31,13 +31,13 @@ export const login = () => async (dispatch) => {
 };
 
 
-export const signup = () => async (dispatch) => {
+export const signup = (data) => async (dispatch) => {
   dispatch(loadingShow(true));
   try {
     const response = await commonRequest(
       apiWithAuth,
       Route(routesMapping.auth.Signup),
-      {},
+      data,
       'POST',
       {},
     );

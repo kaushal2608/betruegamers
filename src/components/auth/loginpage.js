@@ -1,10 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { Box, TextField, Button, Typography, Paper } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/auth/authActions";
 
 const Loginpage = () => {
+  const dispatch = useDispatch();
+  const [loginData, setLoginData] = useState({
+    password: "",
+    email:"",
+  });
+  const [userData, setUserData] = useState([]);
+
+
+  const _login = () => {
+    dispatch(login(loginData))
+      .then((data) => {
+        setUserData(data.data);
+        console.log("status", data.data);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target; // Destructure name and value from event.target
+    setLoginData((prev) => ({
+      ...prev,
+      [name]: value, // Update the state with the new value for the given input name
+    }));
+  };
+  
+console.log("check login values", loginData)
+
   return (
     <Box
       sx={{
@@ -39,6 +70,8 @@ const Loginpage = () => {
               fullWidth
               required
               id="email"
+              name="email"
+              value={loginData.email}
               label="Email"
               variant="outlined"
               type="email"
@@ -48,6 +81,7 @@ const Loginpage = () => {
                   borderRadius: "8px",
                 },
               }}
+              onChange={handleInputChange}
             />
           </Grid>
 
@@ -56,6 +90,8 @@ const Loginpage = () => {
               fullWidth
               required
               id="password"
+              name="password"
+              value={loginData?.password}
               label="Password"
               variant="outlined"
               type="password"
@@ -65,6 +101,7 @@ const Loginpage = () => {
                   borderRadius: "8px",
                 },
               }}
+              onChange={handleInputChange}
             />
           </Grid>
 
@@ -79,6 +116,7 @@ const Loginpage = () => {
                 fontSize: "16px",
                 fontWeight: "bold",
               }}
+              onClick={_login}
             >
               Login
             </Button>

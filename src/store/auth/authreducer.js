@@ -6,7 +6,7 @@ import { USER_DATA } from './authTypes';
     UserData: [],
   };
   
-  const dashboardReducer = (state = initialState, action) => {
+  const authReducer = (state = initialState, action) => {
     switch (action.type) {
       case USER_DATA:
         return {
@@ -18,5 +18,5 @@ import { USER_DATA } from './authTypes';
     }
   };
   
-  export default dashboardReducer;
+  export default authReducer;
   
