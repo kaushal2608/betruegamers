@@ -3,26 +3,33 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { Box, TextField, Button, Typography, Paper } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/store/auth/authActions";
+import { useRouter } from "next/navigation"; // Import useRouter
+import { setSnackBar } from "@/store/app/appActions";
 
 const Loginpage = () => {
   const dispatch = useDispatch();
+  const router = useRouter(); // Initialize router
   const [loginData, setLoginData] = useState({
     password: "",
     email:"",
   });
-  const [userData, setUserData] = useState([]);
+  const count = useSelector(state => state.auth.UserData)
 
-
-  const _login = () => {
+  const _login = (event) => {
+    event.preventDefault(); 
     dispatch(login(loginData))
       .then((data) => {
-        setUserData(data.data);
-        console.log("status", data.data);
+        // console.log("status", data.data.data);
+        router.push(`/dashboard`); // Redirect to dashboard
       })
       .catch((err) => {
-        console.log("error", err);
+        setLoginData({email:"", password:""});
+        dispatch(
+          setSnackBar(true, "error", err.message)
+        );
+        // console.log("error", err);
       });
   };
 
@@ -34,7 +41,7 @@ const Loginpage = () => {
     }));
   };
   
-console.log("check login values", loginData)
+// console.log("check login values", count)
 
   return (
     <Box
@@ -50,6 +57,7 @@ console.log("check login values", loginData)
         backgroundRepeat: "no-repeat", // Prevent repeating the image
       }}
     >
+    <form onSubmit={_login}>
       <Paper 
         elevation={3}
         sx={{
@@ -76,6 +84,7 @@ console.log("check login values", loginData)
               variant="outlined"
               type="email"
               autoComplete="email"
+              size="small"
               InputProps={{
                 sx: {
                   borderRadius: "8px",
@@ -96,6 +105,7 @@ console.log("check login values", loginData)
               variant="outlined"
               type="password"
               autoComplete="current-password"
+              size="small"
               InputProps={{
                 sx: {
                   borderRadius: "8px",
@@ -110,19 +120,22 @@ console.log("check login values", loginData)
               fullWidth
               variant="contained"
               color="primary"
+              type="submit"
+              size="small"
               sx={{
                 padding: "10px 0",
                 borderRadius: "8px",
                 fontSize: "16px",
                 fontWeight: "bold",
               }}
-              onClick={_login}
+              // onClick={_login}
             >
               Login
             </Button>
           </Grid>
         </Grid>
       </Paper>
+      </form>
     </Box>
   );
 };

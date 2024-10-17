@@ -23,6 +23,7 @@ export const getPendingWorkFlowDashboard = () => async (dispatch) => {
       type: SET_PENDING_WORKFLOW_DATA,
       payload: response.data,
     });
+    return response;
   } catch (error) {
     console.log(error)
   } finally {

@@ -7,9 +7,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from '../styles/Dashboard.module.scss';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
   // Sample data for the chart
+  const count = useSelector(state => state.auth.UserData)
   const data = {
     labels: ['Total Applicants', 'Not Reviewed'],
     datasets: [
@@ -36,7 +38,7 @@ const Dashboard = () => {
   //   };
   //   fetchData();
   // }, []);
-
+console.log("redux", count)
   return (
     <Box className={styles.dashboardContainer}>
       <Grid container spacing={2}>

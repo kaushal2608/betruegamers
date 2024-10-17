@@ -6,6 +6,8 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
 import StoreProvider from "./storeprovider";
+import GlobalSnackbar from "./globalsnackbar";
+import WidgetLoader from "./widgetloader";
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -29,6 +31,8 @@ export default function RootLayout({ children }) {
       <ThemeProvider theme={theme}>
       <StoreProvider>
         {children}
+        <WidgetLoader/>
+        <GlobalSnackbar />
       </StoreProvider>
         </ThemeProvider>
        </AppRouterCacheProvider>  
