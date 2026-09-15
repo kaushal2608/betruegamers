@@ -99,6 +99,7 @@ export default function CoachingSessionRoomPage() {
   const [chatInputText, setChatInputText] = useState('');
   const [unreadChatCount, setUnreadChatCount] = useState(0);
   const chatMessagesEndRef = useRef(null);
+  const chatMessagesContainerRef = useRef(null);
   const isChatDrawerOpenRef = useRef(false);
   isChatDrawerOpenRef.current = isChatDrawerOpen;
 
@@ -200,10 +201,13 @@ export default function CoachingSessionRoomPage() {
     };
   }, [isLiveArena, authUser]);
 
-  // Auto-scroll chat to bottom on new messages
+  // Auto-scroll chat to bottom on new messages without scrolling parent page
   useEffect(() => {
-    if (isChatDrawerOpen && chatMessagesEndRef.current) {
-      chatMessagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isChatDrawerOpen && chatMessagesContainerRef.current) {
+      chatMessagesContainerRef.current.scrollTo({
+        top: chatMessagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [chatMessages, isChatDrawerOpen]);
 
@@ -434,7 +438,9 @@ export default function CoachingSessionRoomPage() {
       <Box
         ref={arenaContainerRef}
         sx={{
-          minHeight: '100vh',
+          height: '100vh',
+          maxHeight: '100vh',
+          overflow: 'hidden',
           bgcolor: 'background.default',
           color: 'text.primary',
           display: 'flex',
@@ -562,7 +568,7 @@ export default function CoachingSessionRoomPage() {
         </Box>
 
         {/* Main Stage & Right Panel Layout */}
-        <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
+        <Box sx={{ flex: 1, minHeight: 0, display: 'flex', overflow: 'hidden', position: 'relative' }}>
           {/* Main Stage View */}
           <Box
             sx={{
@@ -718,6 +724,9 @@ export default function CoachingSessionRoomPage() {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
+                maxHeight: '100%',
+                minHeight: 0,
+                overflow: 'hidden',
                 zIndex: 20
               }}
             >
@@ -750,7 +759,7 @@ export default function CoachingSessionRoomPage() {
               </Box>
 
               {/* Participants List */}
-              <List sx={{ flex: 1, overflowY: 'auto', p: 1.5 }}>
+              <List sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 1.5 }}>
                 {allDisplayParticipants.map((p, idx) => {
                   const isSelf = p.user?.id === authUser?.id || p.peerId === myPeerId;
                   const isPresentingThisUser = activePresenter?.socketId === p.peerId || (isSelf && isSharingScreen);
@@ -873,6 +882,9 @@ export default function CoachingSessionRoomPage() {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
+                maxHeight: '100%',
+                minHeight: 0,
+                overflow: 'hidden',
                 zIndex: 20
               }}
             >
@@ -908,14 +920,24 @@ export default function CoachingSessionRoomPage() {
 
               {/* Chat Messages Body */}
               <Box
+                ref={chatMessagesContainerRef}
                 sx={{
                   flex: 1,
+                  minHeight: 0,
                   p: 2,
                   overflowY: 'auto',
+                  overscrollBehavior: 'contain',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 1.8,
-                  bgcolor: isDark ? '#080a0f' : '#f8fafc'
+                  bgcolor: isDark ? '#080a0f' : '#f8fafc',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: isDark ? '#242e44 transparent' : '#cbd5e1 transparent',
+                  '&::-webkit-scrollbar': { width: '6px' },
+                  '&::-webkit-scrollbar-thumb': {
+                    background: isDark ? '#242e44' : '#cbd5e1',
+                    borderRadius: '4px'
+                  }
                 }}
               >
                 {chatMessages.length === 0 ? (
