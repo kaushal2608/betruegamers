@@ -19,7 +19,7 @@ import { friendApi } from '@/store/api/friendApi';
 export default function SocketManager() {
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, token, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
@@ -27,8 +27,8 @@ export default function SocketManager() {
       return;
     }
 
-    // Connect to Socket.IO with auth cookie/token
-    const socket = socketService.connect();
+    // Connect to Socket.IO with explicit auth token
+    const socket = socketService.connect(token);
     if (!socket) return;
 
     // 1. Presence Listeners

@@ -8,36 +8,67 @@ export const initSocket = (httpServer) => {
   io = new Server(httpServer, {
     cors: {
       origin: (origin, callback) => {
-        // Allow no origin (curl/mobile/tools) and any origin in development
-        if (!origin || ENV.NODE_ENV === 'development') {
+        // Allow requests without an Origin header
+        // (curl, mobile clients, server-side tools, etc.)
+        if (!origin) {
           return callback(null, true);
         }
+
+        // Development
+        if (ENV.NODE_ENV === 'development') {
+          return callback(null, true);
+        }
+
+        // Production frontend
+        if (origin === ENV.CLIENT_URL) {
+          return callback(null, true);
+        }
+
+        // Vercel preview deployments
+        if (origin.endsWith('.vercel.app')) {
+          return callback(null, true);
+        }
+
+        // Local development
         if (
-          origin === ENV.CLIENT_URL ||
-          origin.endsWith('.vercel.app') ||
           origin.includes('localhost') ||
           origin.includes('127.0.0.1')
         ) {
           return callback(null, true);
         }
-        callback(null, false);
+
+        console.warn(`[Socket.IO] CORS blocked: ${origin}`);
+
+        return callback(
+          new Error('Not allowed by Socket.IO CORS')
+        );
       },
+
       methods: ['GET', 'POST', 'PATCH', 'DELETE'],
       credentials: true
     },
+
     pingTimeout: 60000,
-    pingInterval: 25000
+    pingInterval: 25000,
+
+    // Explicitly keep the default Socket.IO path
+    path: '/socket.io'
   });
 
-  // Mount authenticated socket event handlers
+  // Register application socket events
   setupSockets(io);
+
+  console.log('⚡ [Socket.IO] Server initialized');
 
   return io;
 };
 
 export const getIO = () => {
   if (!io) {
-    throw new Error('Socket.IO has not been initialized yet!');
+    throw new Error(
+      'Socket.IO has not been initialized yet!'
+    );
   }
+
   return io;
 };
