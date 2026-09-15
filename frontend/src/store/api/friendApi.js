@@ -7,6 +7,11 @@ export const friendApi = apiSlice.injectEndpoints({
       providesTags: ['Friend']
     }),
 
+    searchFriends: builder.query({
+      query: (q) => `/friends/search?q=${encodeURIComponent(q)}`,
+      providesTags: ['Friend']
+    }),
+
     getFriendRequests: builder.query({
       query: () => '/friends/requests',
       providesTags: ['FriendRequest']
@@ -57,6 +62,8 @@ export const friendApi = apiSlice.injectEndpoints({
 
 export const {
   useGetFriendsQuery,
+  useSearchFriendsQuery,
+  useLazySearchFriendsQuery,
   useGetFriendRequestsQuery,
   useSendFriendRequestMutation,
   useAcceptFriendRequestMutation,

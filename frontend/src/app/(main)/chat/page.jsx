@@ -41,7 +41,7 @@ import {
   useSendMessageMutation,
   useMarkConversationAsReadMutation
 } from '@/store/api/chatApi';
-import { useGetFriendsQuery } from '@/store/api/friendApi';
+import { useGetFriendsQuery, useSearchFriendsQuery } from '@/store/api/friendApi';
 import { socketService } from '@/services/socket.service';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -56,6 +56,7 @@ function ChatContent() {
   const isDark = theme.palette.mode === 'dark';
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeConvId, setActiveConvId] = useState(null);
   const [loadingChatId, setLoadingChatId] = useState(null);
   const [activeRecipient, setActiveRecipient] = useState(null);
@@ -65,12 +66,24 @@ function ChatContent() {
   const [hasMore, setHasMore] = useState(false);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
 
+  // 300ms Debounce for direct API search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim());
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const typingTimeoutRef = useRef(null);
 
   const { data: convsData, isLoading: isConvsLoading, refetch: refetchConvs } = useGetConversationsQuery();
   const { data: friendsData } = useGetFriendsQuery();
+  // Direct DB API search query with debouncing — always 100% fresh!
+  const { data: searchFriendsData, isFetching: isSearchingFriends } = useSearchFriendsQuery(debouncedSearch, {
+    skip: !debouncedSearch
+  });
   const [startConversation] = useStartConversationMutation();
   const [markConversationAsRead] = useMarkConversationAsReadMutation();
   const [sendMessageMutation] = useSendMessageMutation();
@@ -127,18 +140,15 @@ function ChatContent() {
     );
   }, [displayConversations, searchQuery]);
 
-  // Only FRIENDS appear in search to start a new chat (non-friends will never show up!)
+  // Direct API search results for friends who don't have an active conversation displayed yet
   const newFriendsToMessage = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q || !friendsList) return [];
+    if (!debouncedSearch) return [];
+    const searchResults = searchFriendsData?.data || [];
     const activeParticipantIds = new Set(displayConversations.map((c) => c.participant_id));
-    return friendsList.filter(
-      (f) =>
-        f.id !== user?.id &&
-        !activeParticipantIds.has(f.id) &&
-        (f.username || '').toLowerCase().includes(q)
+    return searchResults.filter(
+      (f) => f.id !== user?.id && !activeParticipantIds.has(f.id)
     );
-  }, [searchQuery, friendsList, displayConversations, user?.id]);
+  }, [debouncedSearch, searchFriendsData, displayConversations, user?.id]);
 
   const {
     data: messagesData,
@@ -152,11 +162,13 @@ function ChatContent() {
     { skip: !activeConvId, refetchOnMountOrArgChange: true }
   );
 
-  // 1. Handle navigation with ?recipient=... (e.g. from Friends list or Home feed)
+  // 1. Handle navigation with ?recipient=... (e.g. from Friends list or Player Profile)
   useEffect(() => {
     if (!recipientParam || !user || recipientParam === user.id) return;
+    // CRITICAL: Wait for conversations to load first so we don't accidentally create duplicate empty conversations
+    if (isConvsLoading) return;
 
-    // First check if conversation already exists in loaded list
+    // Check if conversation already exists in loaded list
     const existing = conversations.find((c) => c.participant_id === recipientParam);
     if (existing) {
       if (activeConvId !== existing.id) {
@@ -174,7 +186,6 @@ function ChatContent() {
         });
         markConversationAsRead(existing.id);
       }
-      // Clear URL parameter so subsequent conversation clicks are never overridden
       router.replace('/chat', { scroll: false });
       return;
     }
@@ -205,7 +216,6 @@ function ChatContent() {
             avatar: res.data.participant_avatar || f?.avatar_url,
             role: res.data.participant_role || f?.role
           });
-          // Clear URL parameter once created
           router.replace('/chat', { scroll: false });
         }
       })
@@ -213,7 +223,7 @@ function ChatContent() {
         console.error(err);
         setLoadingChatId(null);
       });
-  }, [recipientParam, user, conversations, friendsList, activeConvId, startConversation, markConversationAsRead, router]);
+  }, [recipientParam, user, isConvsLoading, conversations, friendsList, activeConvId, startConversation, markConversationAsRead, router]);
 
   // 2. Set default active conversation if none selected (from displayConversations only!)
   useEffect(() => {
@@ -277,12 +287,12 @@ function ChatContent() {
     }
   }, [messagesData, activeConvId, isMessagesError, markConversationAsRead]);
 
-  // Safety hook: clear loadingChatId if message query finishes fetching
+  // Safety hook: clear loadingChatId ONLY when messagesData has arrived or errored
   useEffect(() => {
-    if (!isMessagesLoading && !isMessagesFetching && loadingChatId) {
+    if (!isMessagesLoading && !isMessagesFetching && (messagesData || isMessagesError) && loadingChatId) {
       setLoadingChatId(null);
     }
-  }, [isMessagesLoading, isMessagesFetching, loadingChatId]);
+  }, [isMessagesLoading, isMessagesFetching, messagesData, isMessagesError, loadingChatId]);
 
   // 5. Auto scroll to bottom only when newest message changes or user sends/receives
   const latestMessageId = localMessages.length > 0 ? localMessages[localMessages.length - 1]?.id : null;

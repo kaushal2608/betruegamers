@@ -69,7 +69,28 @@ export const friendController = {
 
   async getFriends(req, res, next) {
     try {
+      const { q } = req.query;
+      if (q && q.trim()) {
+        const friends = await friendService.searchFriends(req.user.id, q);
+        return res.status(200).json({
+          success: true,
+          data: friends
+        });
+      }
       const friends = await friendService.getFriends(req.user.id);
+      res.status(200).json({
+        success: true,
+        data: friends
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async searchFriends(req, res, next) {
+    try {
+      const { q } = req.query;
+      const friends = await friendService.searchFriends(req.user.id, q);
       res.status(200).json({
         success: true,
         data: friends

@@ -109,6 +109,10 @@ export const friendService = {
     return await friendRepository.getFriendsList(userId);
   },
 
+  async searchFriends(userId, query) {
+    return await friendRepository.searchFriendsList(userId, query);
+  },
+
   async getPendingRequests(userId) {
     return await friendRepository.getPendingRequests(userId);
   }

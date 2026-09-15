@@ -136,26 +136,29 @@ export default function PublicPlayerProfilePage() {
           }}
         />
 
-        <CardContent sx={{ pt: 0, pb: 3 }}>
+        <CardContent sx={{ pt: 0, pb: 3, position: 'relative', zIndex: 2 }}>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             justifyContent="space-between"
-            alignItems={{ xs: 'center', sm: 'flex-end' }}
-            sx={{ mt: { xs: -7, sm: -9 }, mb: 2 }}
+            alignItems={{ xs: 'center', sm: 'flex-start' }}
+            sx={{ mb: 2 }}
           >
-            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center', sm: 'flex-end' }} spacing={2.5}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center', sm: 'flex-start' }} spacing={2.5}>
               <Avatar
                 src={user.avatar_url}
                 alt={user.username}
                 sx={{
                   width: { xs: 100, sm: 130 },
                   height: { xs: 100, sm: 130 },
+                  mt: { xs: -7, sm: -9 },
                   border: '4px solid',
                   borderColor: 'background.paper',
-                  boxShadow: (t) => t.palette.mode === 'dark' ? '0 0 25px rgba(0, 240, 255, 0.4)' : '0 0 25px rgba(2, 132, 199, 0.25)'
+                  boxShadow: (t) => t.palette.mode === 'dark' ? '0 0 25px rgba(0, 240, 255, 0.4)' : '0 0 25px rgba(2, 132, 199, 0.25)',
+                  position: 'relative',
+                  zIndex: 3
                 }}
               />
-              <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+              <Box sx={{ textAlign: { xs: 'center', sm: 'left' }, pt: { xs: 1, sm: 1.5 } }}>
                 <Stack direction="row" alignItems="center" spacing={1.5} justifyContent={{ xs: 'center', sm: 'flex-start' }} sx={{ overflow: 'visible' }}>
                   <Typography
                     variant="h4"
@@ -182,7 +185,7 @@ export default function PublicPlayerProfilePage() {
               </Box>
             </Stack>
 
-            <Stack direction="row" spacing={2} sx={{ mt: { xs: 2, sm: 0 } }}>
+            <Stack direction="row" spacing={2} sx={{ mt: { xs: 2, sm: 1.5 } }}>
               {isFriend ? (
                 <Button
                   variant="outlined"

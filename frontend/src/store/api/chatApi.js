@@ -23,8 +23,7 @@ export const chatApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result, error, { conversationId }) => [
         { type: 'Message', id: conversationId }
-      ],
-      keepUnusedDataFor: 0
+      ]
     }),
 
     sendMessage: builder.mutation({

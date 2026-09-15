@@ -134,11 +134,11 @@ export default function ProfilePage() {
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             justifyContent="space-between"
-            alignItems={{ xs: 'center', sm: 'flex-end' }}
-            sx={{ mt: { xs: -7, sm: -9 }, mb: 2 }}
+            alignItems={{ xs: 'center', sm: 'flex-start' }}
+            sx={{ mb: 2 }}
           >
-            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center', sm: 'flex-end' }} spacing={2.5}>
-              <Box sx={{ position: 'relative' }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center', sm: 'flex-start' }} spacing={2.5}>
+              <Box sx={{ position: 'relative', mt: { xs: -7, sm: -9 }, zIndex: 3 }}>
                 <Avatar
                   src={user?.avatar_url}
                   alt={user?.username}

@@ -16,7 +16,8 @@ export const chatRepository = {
           members: {
             include: { user: true }
           }
-        }
+        },
+        orderBy: { lastMessageAt: 'desc' }
       });
       return conv;
     } catch (e) {

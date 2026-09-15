@@ -144,6 +144,46 @@ export const friendRepository = {
     }, 60);
   },
 
+  async searchFriendsList(userId, query) {
+    const q = (query || '').trim();
+    if (!q) return [];
+    try {
+      const friendships = await prisma.friendship.findMany({
+        where: {
+          OR: [{ userId1: userId }, { userId2: userId }],
+          AND: [
+            {
+              OR: [
+                { user1: { username: { contains: q, mode: 'insensitive' } } },
+                { user2: { username: { contains: q, mode: 'insensitive' } } }
+              ]
+            }
+          ]
+        },
+        include: {
+          user1: { include: { profile: true } },
+          user2: { include: { profile: true } }
+        }
+      });
+
+      return friendships.map((f) => {
+        const friend = f.userId1 === userId ? f.user2 : f.user1;
+        return {
+          id: friend.id,
+          username: friend.username,
+          email: friend.email,
+          avatar_url: friend.avatarUrl,
+          role: friend.role,
+          experience_level: friend.profile?.experienceLevel || 'Gamer',
+          bio: friend.profile?.bio
+        };
+      });
+    } catch (e) {
+      console.error('[Friend Error] searchFriendsList failed:', e.message);
+      return [];
+    }
+  },
+
   async getPendingRequests(userId) {
     return await appCache.getOrSet(`friends:reqs:${userId}`, async () => {
       try {
