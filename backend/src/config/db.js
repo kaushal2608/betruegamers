@@ -1,10 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { ENV } from './env.js';
 
-// Instantiate PrismaClient
-export const prisma = new PrismaClient({
-  log: ENV.NODE_ENV === 'development' ? ['warn', 'error'] : ['error']
-});
+// Global singleton for PrismaClient to prevent connection pool exhaustion
+const globalForPrisma = globalThis;
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: ENV.NODE_ENV === 'development' ? ['warn', 'error'] : ['error']
+  });
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
 
 export const checkDatabaseConnection = async () => {
   try {

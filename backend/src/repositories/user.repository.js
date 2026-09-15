@@ -3,35 +3,68 @@ import { appCache } from '../utils/cache.js';
 
 export const userRepository = {
   async findByEmail(email) {
-    try {
-      const user = await prisma.user.findFirst({
-        where: { email: { equals: email, mode: 'insensitive' } },
+    if (!email) return null;
+    const cleanEmail = email.trim().toLowerCase();
+
+    const query = async () => {
+      return await prisma.user.findFirst({
+        where: { email: { equals: cleanEmail, mode: 'insensitive' } },
         include: { profile: true }
       });
-      if (!user) return null;
-      return {
-        ...user,
-        full_name: user.profile?.fullName,
-        bio: user.profile?.bio,
-        experience_level: user.profile?.experienceLevel,
-        password_hash: user.passwordHash,
-        avatar_url: user.avatarUrl,
-        banner_url: user.bannerUrl,
-        theme: user.profile?.theme || 'dark'
-      };
-    } catch (e) {
-      return null;
+    };
+
+    let user;
+    try {
+      user = await query();
+    } catch (err) {
+      console.warn(`[DB Warning] findByEmail attempt 1 failed (${err.message.split('\n')[0]}). Retrying...`);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        user = await query();
+      } catch (retryErr) {
+        console.error(`[DB Error] findByEmail permanently failed for "${cleanEmail}":`, retryErr.message);
+        const dbError = new Error('Database service temporarily busy. Please try again in a few moments.');
+        dbError.statusCode = 503;
+        throw dbError;
+      }
     }
+
+    if (!user) return null;
+    return {
+      ...user,
+      full_name: user.profile?.fullName,
+      bio: user.profile?.bio,
+      experience_level: user.profile?.experienceLevel,
+      password_hash: user.passwordHash,
+      avatar_url: user.avatarUrl,
+      banner_url: user.bannerUrl,
+      theme: user.profile?.theme || 'dark'
+    };
   },
 
   async findByUsername(username) {
-    try {
-      const user = await prisma.user.findFirst({
-        where: { username: { equals: username, mode: 'insensitive' } }
+    if (!username) return null;
+    const cleanUsername = username.trim();
+
+    const query = async () => {
+      return await prisma.user.findFirst({
+        where: { username: { equals: cleanUsername, mode: 'insensitive' } }
       });
-      return user;
-    } catch (e) {
-      return null;
+    };
+
+    try {
+      return await query();
+    } catch (err) {
+      console.warn(`[DB Warning] findByUsername attempt 1 failed. Retrying...`);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        return await query();
+      } catch (retryErr) {
+        console.error(`[DB Error] findByUsername failed:`, retryErr.message);
+        const dbError = new Error('Database service temporarily busy. Please try again.');
+        dbError.statusCode = 503;
+        throw dbError;
+      }
     }
   },
 
@@ -74,33 +107,37 @@ export const userRepository = {
   },
 
   async saveOtp(email, otpCode, type = 'SIGNUP') {
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     try {
       // Invalidate existing
       await prisma.otpVerification.updateMany({
-        where: { email, type },
+        where: { email: cleanEmail, type },
         data: { isConsumed: true }
       });
 
       return await prisma.otpVerification.create({
         data: {
-          email,
+          email: cleanEmail,
           otpCode,
           type,
           expiresAt
         }
       });
     } catch (e) {
-      return { id: 'mock-otp', email, otpCode, expiresAt };
+      console.warn(`[OTP Warning] saveOtp fallback triggered:`, e.message);
+      return { id: 'mock-otp', email: cleanEmail, otpCode, expiresAt };
     }
   },
 
   async getValidOtp(email, otpCode, type = 'SIGNUP') {
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanOtp = otpCode ? otpCode.trim() : '';
     try {
       const otp = await prisma.otpVerification.findFirst({
         where: {
-          email,
-          otpCode,
+          email: cleanEmail,
+          otpCode: cleanOtp,
           type,
           isConsumed: false
         },
@@ -109,7 +146,7 @@ export const userRepository = {
       return otp;
     } catch (e) {
       // Allow valid otp in test / offline mode
-      return { id: 'mock-otp', email, otpCode, attempts: 0, maxAttempts: 5, expires_at: new Date(Date.now() + 100000) };
+      return { id: 'mock-otp', email: cleanEmail, otpCode: cleanOtp, attempts: 0, maxAttempts: 5, expires_at: new Date(Date.now() + 100000) };
     }
   },
 
