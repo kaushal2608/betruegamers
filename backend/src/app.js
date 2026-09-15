@@ -34,7 +34,12 @@ app.use(cors({
     if (!origin || ENV.NODE_ENV === 'development') {
       return callback(null, true);
     }
-    if (origin === ENV.CLIENT_URL || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    if (
+      origin === ENV.CLIENT_URL ||
+      origin.endsWith('.vercel.app') ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1')
+    ) {
       return callback(null, true);
     }
     callback(null, false);

@@ -2,13 +2,16 @@ import { io } from 'socket.io-client';
 import Cookies from 'js-cookie';
 
 const getSocketUrl = () => {
+  if (process.env.NEXT_PUBLIC_SOCKET_URL) {
+    return process.env.NEXT_PUBLIC_SOCKET_URL;
+  }
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
       return `${window.location.protocol}//${hostname}:5000`;
     }
   }
-  return process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
+  return 'http://localhost:5000';
 };
 
 class SocketService {
