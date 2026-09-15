@@ -21,8 +21,7 @@ export const userApi = apiSlice.injectEndpoints({
         url: '/users/theme',
         method: 'PATCH',
         body: { theme }
-      }),
-      invalidatesTags: ['User', 'Profile']
+      })
     }),
 
     uploadAvatar: builder.mutation({

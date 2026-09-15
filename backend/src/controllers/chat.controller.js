@@ -17,9 +17,17 @@ export const chatController = {
     try {
       const { recipientId } = req.body;
       const conversation = await chatService.getOrCreateConversation(req.user.id, recipientId);
+      const otherMember = conversation.members?.find((m) => m.userId !== req.user.id)?.user;
       res.status(201).json({
         success: true,
-        data: conversation
+        data: {
+          id: conversation.id,
+          is_group: conversation.isGroup,
+          participant_id: otherMember?.id || recipientId,
+          participant_name: otherMember?.username || 'Gamer',
+          participant_avatar: otherMember?.avatarUrl,
+          participant_role: otherMember?.role
+        }
       });
     } catch (err) {
       next(err);

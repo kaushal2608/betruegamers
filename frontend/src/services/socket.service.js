@@ -55,8 +55,6 @@ class SocketService {
         this.disconnect();
       } else if (this.socket.connected) {
         return this.socket;
-      } else if (this.socket.active) {
-        return this.socket;
       } else {
         this.socket.connect();
         return this.socket;
@@ -92,6 +90,8 @@ class SocketService {
       console.log(
         `[Socket.IO] Connected to server: ${this.socket.id}`
       );
+      // Immediately refresh presence on connection/reconnection
+      this.socket.emit('presence:query');
     });
 
     this.socket.on('disconnect', (reason) => {
@@ -107,6 +107,14 @@ class SocketService {
     });
 
     return this.socket;
+  }
+
+  ensureActive(token) {
+    const s = this.connect(token);
+    if (s && s.connected) {
+      s.emit('presence:query');
+    }
+    return s;
   }
 
   disconnect() {

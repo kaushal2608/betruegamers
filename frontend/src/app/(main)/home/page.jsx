@@ -133,36 +133,49 @@ export default function DashboardHomePage() {
                 YOUR COACHING SESSIONS
               </Typography>
               <Stack spacing={2}>
-                {sessions.slice(0, 3).map((s) => (
-                  <Card key={s.id} sx={{ p: 2.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box>
-                      <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 0.5 }}>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                          {s.game_name} with {s.coach_username || 'Coach'}
-                        </Typography>
-                        <Chip
-                          label={s.status}
-                          size="small"
-                          color={s.status === 'LIVE' ? 'success' : s.status === 'ACCEPTED' ? 'primary' : 'default'}
-                          sx={{ fontWeight: 800, fontSize: '0.7rem' }}
+                {sessions.slice(0, 3).map((s) => {
+                  const isCoach = user?.id === s.coach_user_id || user?.username === s.coach_username;
+                  const otherPartyName = isCoach ? (s.gamer_username || 'Student') : (s.coach_username || 'Coach');
+                  const otherPartyAvatar = isCoach ? s.gamer_avatar : s.coach_avatar;
+
+                  return (
+                    <Card key={s.id} sx={{ p: 2.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Avatar
+                          src={otherPartyAvatar}
+                          alt={otherPartyName}
+                          sx={{ width: 44, height: 44, border: '2px solid', borderColor: isCoach ? 'primary.main' : 'secondary.main' }}
                         />
+                        <Box>
+                          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 0.5 }}>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                              {s.game_name} with {otherPartyName}
+                            </Typography>
+                            <Chip
+                              label={s.status}
+                              size="small"
+                              color={s.status === 'LIVE' ? 'success' : s.status === 'ACCEPTED' ? 'primary' : 'default'}
+                              sx={{ fontWeight: 800, fontSize: '0.7rem' }}
+                            />
+                          </Stack>
+                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                            Duration: {s.duration_minutes} mins {s.goals && `• Goal: ${s.goals}`}
+                          </Typography>
+                        </Box>
                       </Stack>
-                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                        Duration: {s.duration_minutes} mins {s.goals && `• Goal: ${s.goals}`}
-                      </Typography>
-                    </Box>
-                    <Button
-                      component={Link}
-                      href={`/coaching/${s.id}`}
-                      variant={s.status === 'LIVE' ? 'contained' : 'outlined'}
-                      color={s.status === 'LIVE' ? 'success' : 'primary'}
-                      startIcon={<Tv size={16} />}
-                      size="small"
-                    >
-                      {s.status === 'LIVE' ? 'Join Live Stream' : 'Session Room'}
-                    </Button>
-                  </Card>
-                ))}
+                      <Button
+                        component={Link}
+                        href={`/coaching/${s.id}`}
+                        variant={s.status === 'LIVE' ? 'contained' : 'outlined'}
+                        color={s.status === 'LIVE' ? 'success' : 'primary'}
+                        startIcon={<Tv size={16} />}
+                        size="small"
+                      >
+                        {s.status === 'LIVE' ? 'Join Live Stream' : 'Session Room'}
+                      </Button>
+                    </Card>
+                  );
+                })}
               </Stack>
             </Box>
           )}

@@ -96,7 +96,8 @@ export const authApi = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           if (data.data) {
             dispatch(setCredentials({ user: data.data, token: Cookies.get('btg_token') }));
-            if (data.data?.theme) {
+            const activeLocalTheme = Cookies.get('btg_theme') || (typeof window !== 'undefined' ? localStorage.getItem('btg_theme_mode') : null);
+            if (!activeLocalTheme && data.data?.theme) {
               dispatch(setThemeMode(data.data.theme));
             }
           }

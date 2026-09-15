@@ -29,16 +29,8 @@ export const coachingRepository = {
         return session;
       });
     } catch (e) {
-      return {
-        id: 'demo-session',
-        gamer_id: gamerId,
-        coach_id: coachId,
-        game_id: gameId,
-        duration_minutes: durationMinutes,
-        goals,
-        scheduled_at: scheduledAt,
-        status: 'REQUESTED'
-      };
+      console.error('[Coaching Error] createSession failed:', e.message);
+      throw e;
     }
   },
 
@@ -79,23 +71,11 @@ export const coachingRepository = {
           hourly_rate_usd: Number(s.coach?.hourlyRateUsd)
         };
       }
-    } catch (e) {}
-
-    return {
-      id: sessionId,
-      gamer_id: 'u-gamer',
-      coach_id: 'c1',
-      game_id: 'g1',
-      status: 'LIVE',
-      duration_minutes: 60,
-      goals: 'Aim training & decision making VOD review',
-      game_name: 'Valorant',
-      gamer_username: 'Gamer',
-      coach_username: 'CoachAlex',
-      coach_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80',
-      coach_headline: 'Radiant #24 Peak | Pro VCT Analyst',
-      hourly_rate_usd: 35
-    };
+      return null;
+    } catch (e) {
+      console.error('[Coaching Error] getSessionById failed:', e.message);
+      return null;
+    }
   },
 
   async updateSessionStatus(sessionId, status) {
@@ -113,7 +93,8 @@ export const coachingRepository = {
       });
       return updated;
     } catch (e) {
-      return { id: sessionId, status };
+      console.error('[Coaching Error] updateSessionStatus failed:', e.message);
+      throw e;
     }
   },
 
@@ -158,17 +139,8 @@ export const coachingRepository = {
           hourly_rate_usd: Number(s.coach?.hourlyRateUsd || 0)
         }));
       } catch (e) {
-        return [
-          {
-            id: 'demo-session',
-            game_name: 'Valorant',
-            coach_username: 'CoachAlex',
-            coach_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80',
-            duration_minutes: 60,
-            status: 'LIVE',
-            goals: 'Tactical macro & crosshair discipline'
-          }
-        ];
+        console.error('[Coaching Error] getUserSessions failed:', e.message);
+        return [];
       }
     }, 20); // 20 seconds TTL
   },

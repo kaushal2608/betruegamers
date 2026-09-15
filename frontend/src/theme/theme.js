@@ -5,26 +5,32 @@ const commonTypography = {
   h1: {
     fontWeight: 800,
     letterSpacing: '0.02em',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    lineHeight: 1.25
   },
   h2: {
     fontWeight: 700,
     letterSpacing: '0.02em',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    lineHeight: 1.25
   },
   h3: {
     fontWeight: 700,
-    letterSpacing: '0.01em'
+    letterSpacing: '0.01em',
+    lineHeight: 1.3
   },
   h4: {
     fontWeight: 700,
-    letterSpacing: '0.01em'
+    letterSpacing: '0.01em',
+    lineHeight: 1.35
   },
   h5: {
-    fontWeight: 600
+    fontWeight: 600,
+    lineHeight: 1.4
   },
   h6: {
-    fontWeight: 600
+    fontWeight: 600,
+    lineHeight: 1.4
   },
   button: {
     fontWeight: 700,

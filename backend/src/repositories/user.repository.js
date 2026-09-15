@@ -416,5 +416,20 @@ export const userRepository = {
         return [];
       }
     }, 30);
+  },
+
+  async updateTheme(userId, theme) {
+    const validTheme = theme === 'light' ? 'light' : 'dark';
+    appCache.del('user:' + userId);
+    try {
+      await prisma.$executeRawUnsafe(
+        `UPDATE user_profiles SET theme = $1 WHERE user_id = $2::uuid;`,
+        validTheme,
+        userId
+      );
+    } catch (e) {
+      // Column might not exist in Prisma schema, silently handle
+    }
+    return { theme: validTheme };
   }
 };

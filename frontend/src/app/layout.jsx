@@ -4,16 +4,39 @@ import StoreProvider from '@/store/StoreProvider';
 import GlobalSnackbar from '@/components/common/GlobalSnackbar';
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://betruegamers.vercel.app'),
   title: 'BeTrueGamers — Level Up Your Game',
   description: 'The premier social gaming & coaching platform. Connect with gamers, book live 1-on-1 coaching sessions with real-time screen sharing, and dominate the leaderboards.',
   keywords: ['gaming', 'coaching', 'esports', 'screen share', 'gamer network', 'valorant coach', 'game sessions'],
+  openGraph: {
+    title: 'BeTrueGamers — Level Up Your Game',
+    description: 'The premier social gaming & coaching platform. Connect with gamers, book live 1-on-1 coaching sessions with real-time screen sharing, and dominate the leaderboards.',
+    url: 'https://betruegamers.vercel.app',
+    siteName: 'BeTrueGamers',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'BeTrueGamers - Level Up Your Game'
+      }
+    ],
+    locale: 'en_US',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'BeTrueGamers — Level Up Your Game',
+    description: 'The premier social gaming & coaching platform. Connect with gamers, book live 1-on-1 coaching sessions with real-time screen sharing, and dominate the leaderboards.',
+    images: ['/og-image.jpg']
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: 'any' }
     ],
     shortcut: '/favicon.svg',
-    apple: '/favicon.svg'
+    apple: '/apple-touch-icon.png'
   }
 };
 

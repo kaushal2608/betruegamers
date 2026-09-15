@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { socketService } from '@/services/socket.service';
@@ -19,8 +19,40 @@ import { friendApi } from '@/store/api/friendApi';
 export default function SocketManager() {
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
   const { user, token, isAuthenticated } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    pathnameRef.current = pathname;
+  }, [pathname]);
+
+  // 1. Navigation & Route Switch Wake-Up: Ensure socket is active and presence is fresh when switching pages
+  useEffect(() => {
+    if (isAuthenticated && user?.id) {
+      socketService.ensureActive(token);
+    }
+  }, [pathname, isAuthenticated, user?.id, token]);
+
+  // 2. Tab Inactivity / Sleep Wake-Up: Instantly restore presence when tab becomes active or window gains focus
+  useEffect(() => {
+    if (!isAuthenticated || !user?.id) return;
+
+    const handleWakeUp = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        socketService.ensureActive(token);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleWakeUp);
+    window.addEventListener('focus', handleWakeUp);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleWakeUp);
+      window.removeEventListener('focus', handleWakeUp);
+    };
+  }, [isAuthenticated, user?.id, token]);
+
+  // 3. Persistent Real-time Event Listeners (Independent of page route changes!)
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
       socketService.disconnect();
@@ -31,7 +63,7 @@ export default function SocketManager() {
     const socket = socketService.connect(token);
     if (!socket) return;
 
-    // 1. Presence Listeners
+    // Presence Listeners
     const handlePresenceList = (users) => {
       dispatch(setOnlineUsers(users));
     };
@@ -48,11 +80,10 @@ export default function SocketManager() {
       }
     };
 
-    // 2. Notification Listener
+    // Notification Listener
     const handleNewNotification = (notif) => {
       if (!notif) return;
 
-      // Show real-time snackbar immediately
       const text = notif.title && notif.message
         ? `${notif.title}: ${notif.message}`
         : notif.message || 'You have a new notification!';
@@ -65,20 +96,16 @@ export default function SocketManager() {
         })
       );
 
-      // Increment badge count
       dispatch(incrementUnreadNotifications());
-
-      // Invalidate RTK Query cache for notifications
       dispatch(notificationApi.util.invalidateTags(['Notification']));
     };
 
-    // 3. Global Chat Message Received Listener
+    // Global Chat Message Received Listener
     const handleChatMessageReceived = ({ conversationId, message }) => {
-      // Invalidate conversations to update last message & unread badge count
       dispatch(chatApi.util.invalidateTags(['Conversation']));
 
-      // If user is not currently in chat page, show a quick snackbar toast
-      if (!pathname?.startsWith('/chat')) {
+      // Only show popup toast if not currently looking at the chat page
+      if (!pathnameRef.current?.startsWith('/chat')) {
         const senderName = message?.sender_username || 'New message';
         const msgText = message?.content ? (message.content.length > 50 ? message.content.slice(0, 50) + '...' : message.content) : '';
         dispatch(
@@ -91,7 +118,7 @@ export default function SocketManager() {
       }
     };
 
-    // 4. Coaching Status Changed & Request Listeners
+    // Coaching Status Changed & Request Listeners
     const handleCoachingStatusChanged = ({ status, sessionId }) => {
       dispatch(coachingApi.util.invalidateTags(['CoachingSession']));
       if (status === 'ACCEPTED') {
@@ -116,7 +143,7 @@ export default function SocketManager() {
       );
     };
 
-    // 5. Friend Request & Accepted Listeners
+    // Friend Request & Accepted Listeners
     const handleFriendAccepted = () => {
       dispatch(friendApi.util.invalidateTags(['Friend', 'FriendRequest']));
     };
@@ -149,7 +176,7 @@ export default function SocketManager() {
       socketService.off('friend:accepted', handleFriendAccepted);
       socketService.off('friend:request', handleFriendRequest);
     };
-  }, [dispatch, isAuthenticated, user?.id, pathname]);
+  }, [dispatch, isAuthenticated, user?.id, token]);
 
   return null;
 }

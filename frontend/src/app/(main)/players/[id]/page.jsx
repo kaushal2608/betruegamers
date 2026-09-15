@@ -156,8 +156,17 @@ export default function PublicPlayerProfilePage() {
                 }}
               />
               <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
-                <Stack direction="row" alignItems="center" spacing={1.5} justifyContent={{ xs: 'center', sm: 'flex-start' }}>
-                  <Typography variant="h4" sx={{ fontWeight: 800 }}>
+                <Stack direction="row" alignItems="center" spacing={1.5} justifyContent={{ xs: 'center', sm: 'flex-start' }} sx={{ overflow: 'visible' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 800,
+                      lineHeight: 1.35,
+                      pt: '4px',
+                      overflow: 'visible',
+                      display: 'inline-block'
+                    }}
+                  >
                     {user.username}
                   </Typography>
                   <Chip

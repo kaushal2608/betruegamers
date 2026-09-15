@@ -11,6 +11,11 @@ export const chatRepository = {
             { members: { some: { userId: userId1 } } },
             { members: { some: { userId: userId2 } } }
           ]
+        },
+        include: {
+          members: {
+            include: { user: true }
+          }
         }
       });
       return conv;
@@ -30,10 +35,16 @@ export const chatRepository = {
               { userId: userId2 }
             ]
           }
+        },
+        include: {
+          members: {
+            include: { user: true }
+          }
         }
       });
     } catch (e) {
-      return { id: 'conv-mock-id', is_group: false };
+      console.error('[Chat Error] createDirectConversation failed:', e.message);
+      throw e;
     }
   },
 
@@ -99,17 +110,8 @@ export const chatRepository = {
 
         return convResults;
       } catch (e) {
-        return [
-          {
-            id: 'demo-conv-id',
-            participant_id: 'u-alex',
-            participant_name: 'CoachAlex',
-            participant_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
-            participant_role: 'COACH',
-            last_message_content: 'Ready for today’s session? Join the room when ready!',
-            unread_count: 0
-          }
-        ];
+        console.error('[Chat Error] getUserConversations failed:', e.message);
+        return [];
       }
     }, 180); // 180 seconds TTL (auto-invalidated on message events)
   },
@@ -170,19 +172,10 @@ export const chatRepository = {
         has_more: skip + rawMessages.length < total
       };
     } catch (e) {
+      console.error('[Chat Error] getConversationMessages failed:', e.message);
       return {
-        messages: [
-          {
-            id: 'm1',
-            conversation_id: conversationId,
-            sender_id: 'u-alex',
-            content: 'Hey! Looking forward to reviewing your gameplay in the live arena today.',
-            created_at: new Date(),
-            sender_username: 'CoachAlex',
-            sender_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'
-          }
-        ],
-        total: 1,
+        messages: [],
+        total: 0,
         limit,
         offset,
         has_more: false

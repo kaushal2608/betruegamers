@@ -12,6 +12,10 @@ export const registerPresenceHandlers = (io, socket) => {
     socket.emit('presence:list', Array.from(onlineUsers));
 
     socket.on('presence:query', () => {
+      if (!onlineUsers.has(userId)) {
+        onlineUsers.add(userId);
+        io.emit('presence:online', { userId });
+      }
       socket.emit('presence:list', Array.from(onlineUsers));
     });
 

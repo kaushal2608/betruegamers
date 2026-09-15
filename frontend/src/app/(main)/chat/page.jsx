@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
@@ -46,6 +46,7 @@ import { socketService } from '@/services/socket.service';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 function ChatContent() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const recipientParam = searchParams.get('recipient');
@@ -78,12 +79,26 @@ function ChatContent() {
   const friendsList = friendsData?.data || [];
   const conversations = convsData?.data || [];
 
-  // Seamless draft conversation entry if currently messaging a friend before the 1st message is sent
+  // Set of accepted friend IDs
+  const friendIdSet = useMemo(() => new Set(friendsList.map((f) => f.id)), [friendsList]);
+
+  // Conversations where actual messages have taken place with an accepted friend (convo ho rakhi h)
+  const activeExistingConversations = useMemo(() => {
+    return conversations.filter(
+      (c) =>
+        friendIdSet.has(c.participant_id) &&
+        Boolean(c.last_message_content || c.last_message_time)
+    );
+  }, [conversations, friendIdSet]);
+
+  // Display list: Active conversations + draft friend conversation if user clicked someone from Home/Friends or Search
   const displayConversations = useMemo(() => {
     if (
       activeConvId &&
       activeRecipient &&
-      !conversations.some((c) => c.id === activeConvId || c.participant_id === activeRecipient.id)
+      !activeExistingConversations.some(
+        (c) => c.id === activeConvId || c.participant_id === activeRecipient.id
+      )
     ) {
       const draftConv = {
         id: activeConvId,
@@ -91,14 +106,17 @@ function ChatContent() {
         participant_name: activeRecipient.name,
         participant_avatar: activeRecipient.avatar,
         participant_role: activeRecipient.role,
-        last_message_content: localMessages.length > 0 ? localMessages[localMessages.length - 1]?.content : 'No messages yet',
+        last_message_content:
+          localMessages.length > 0
+            ? localMessages[localMessages.length - 1]?.content
+            : 'No messages yet',
         last_message_time: new Date().toISOString(),
         unread_count: 0
       };
-      return [draftConv, ...conversations];
+      return [draftConv, ...activeExistingConversations];
     }
-    return conversations;
-  }, [conversations, activeConvId, activeRecipient, localMessages]);
+    return activeExistingConversations;
+  }, [activeExistingConversations, activeConvId, activeRecipient, localMessages]);
 
   // Filter existing active conversations by search
   const filteredConversations = useMemo(() => {
@@ -109,7 +127,7 @@ function ChatContent() {
     );
   }, [displayConversations, searchQuery]);
 
-  // Only FRIENDS appear in search to start a new chat (non-friends like arbitrary coaches will never show up!)
+  // Only FRIENDS appear in search to start a new chat (non-friends will never show up!)
   const newFriendsToMessage = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     if (!q || !friendsList) return [];
@@ -156,11 +174,23 @@ function ChatContent() {
         });
         markConversationAsRead(existing.id);
       }
+      // Clear URL parameter so subsequent conversation clicks are never overridden
+      router.replace('/chat', { scroll: false });
       return;
     }
 
     // If not found in current list, create or get via API
     setLoadingChatId('new');
+    const f = friendsList.find((fr) => fr.id === recipientParam);
+    if (f) {
+      setActiveRecipient({
+        id: f.id,
+        name: f.username,
+        avatar: f.avatar_url,
+        role: f.role
+      });
+    }
+
     startConversation(recipientParam)
       .unwrap()
       .then((res) => {
@@ -169,27 +199,26 @@ function ChatContent() {
           setTypingUsers(new Set());
           setLoadingChatId(res.data.id);
           setActiveConvId(res.data.id);
-          const f = friendsList.find((fr) => fr.id === recipientParam);
-          if (f) {
-            setActiveRecipient({
-              id: f.id,
-              name: f.username,
-              avatar: f.avatar_url,
-              role: f.role
-            });
-          }
+          setActiveRecipient({
+            id: res.data.participant_id || f?.id || recipientParam,
+            name: res.data.participant_name || f?.username || 'Gamer',
+            avatar: res.data.participant_avatar || f?.avatar_url,
+            role: res.data.participant_role || f?.role
+          });
+          // Clear URL parameter once created
+          router.replace('/chat', { scroll: false });
         }
       })
       .catch((err) => {
         console.error(err);
         setLoadingChatId(null);
       });
-  }, [recipientParam, user, conversations, friendsList, activeConvId, startConversation, markConversationAsRead]);
+  }, [recipientParam, user, conversations, friendsList, activeConvId, startConversation, markConversationAsRead, router]);
 
-  // 2. Set default active conversation if none selected
+  // 2. Set default active conversation if none selected (from displayConversations only!)
   useEffect(() => {
-    if (!activeConvId && !recipientParam && conversations.length > 0) {
-      const firstConv = conversations[0];
+    if (!activeConvId && !recipientParam && displayConversations.length > 0) {
+      const firstConv = displayConversations[0];
       setLoadingChatId(firstConv.id);
       setActiveConvId(firstConv.id);
       setActiveRecipient({
@@ -200,13 +229,13 @@ function ChatContent() {
       });
       markConversationAsRead(firstConv.id);
     }
-  }, [conversations, activeConvId, recipientParam, markConversationAsRead]);
+  }, [displayConversations, activeConvId, recipientParam, markConversationAsRead]);
 
-  // 3. Keep activeRecipient details in sync with conversations list
+  // 3. Keep activeRecipient details in sync with displayConversations
   useEffect(() => {
-    if (activeConvId && conversations.length > 0) {
-      const match = conversations.find((c) => c.id === activeConvId);
-      if (match) {
+    if (activeConvId && displayConversations.length > 0) {
+      const match = displayConversations.find((c) => c.id === activeConvId);
+      if (match && match.participant_name) {
         setActiveRecipient((prev) => {
           if (
             !prev ||
@@ -225,7 +254,7 @@ function ChatContent() {
         });
       }
     }
-  }, [conversations, activeConvId]);
+  }, [displayConversations, activeConvId]);
 
   // 4. Sync initial 10 messages from query into local state
   useEffect(() => {
@@ -429,6 +458,12 @@ function ChatContent() {
       if (res?.data) {
         setLoadingChatId(res.data.id);
         setActiveConvId(res.data.id);
+        setActiveRecipient({
+          id: res.data.participant_id || targetFriend.id,
+          name: res.data.participant_name || targetFriend.username,
+          avatar: res.data.participant_avatar || targetFriend.avatar_url,
+          role: res.data.participant_role || targetFriend.role
+        });
       }
     } catch (err) {
       console.error('Failed to start conversation:', err);
@@ -535,9 +570,14 @@ function ChatContent() {
               <LoadingSpinner message="Loading conversations..." size={32} />
             ) : filteredConversations.length === 0 && newFriendsToMessage.length === 0 ? (
               <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {searchQuery.trim() ? 'No chats or friends found.' : 'No active conversations yet.'}
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                  {searchQuery.trim() ? 'No friends or chats match your search.' : 'No active conversations yet.'}
                 </Typography>
+                {!searchQuery.trim() && (
+                  <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+                    Type a friend's name in search above to start a chat!
+                  </Typography>
+                )}
               </Box>
             ) : (
               <>
@@ -814,7 +854,7 @@ function ChatContent() {
                       Retry
                     </Button>
                   </Box>
-                ) : (isMessagesLoading && localMessages.length === 0) ? (
+                ) : ((isMessagesLoading || isMessagesFetching || Boolean(loadingChatId)) && localMessages.length === 0) ? (
                   <LoadingSpinner message="Loading messages..." size={32} />
                 ) : localMessages.length === 0 ? (
                   <Box sx={{ my: 'auto', textAlign: 'center' }}>
@@ -927,9 +967,13 @@ function ChatContent() {
               </Box>
             </>
           ) : (
-            <Box sx={{ m: 'auto', textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-                Select a conversation to start messaging
+            <Box sx={{ m: 'auto', textAlign: 'center', p: 4 }}>
+              <MessageSquare size={48} color={theme.palette.text.disabled} style={{ marginBottom: 12, opacity: 0.6 }} />
+              <Typography variant="h6" sx={{ color: 'text.secondary', fontWeight: 700, mb: 0.8 }}>
+                Your Communication Arena
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.disabled', maxWidth: 360, mx: 'auto' }}>
+                Select an active conversation from the sidebar or search your friends above to start chatting!
               </Typography>
             </Box>
           )}
