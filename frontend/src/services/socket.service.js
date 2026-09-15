@@ -81,7 +81,7 @@ class SocketService {
 
       // Start with polling handshake and allow
       // Socket.IO to upgrade to WebSocket.
-      transports: ['polling', 'websocket'],
+      transports: ['websocket'],
 
       reconnection: true,
       reconnectionAttempts: 20,

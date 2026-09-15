@@ -6,6 +6,7 @@ let io = null;
 
 export const initSocket = (httpServer) => {
   io = new Server(httpServer, {
+    transports: ['websocket'],
     cors: {
       origin: (origin, callback) => {
         // Allow requests without an Origin header
