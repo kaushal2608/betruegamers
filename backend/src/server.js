@@ -1,38 +1,60 @@
 import http from 'node:http';
-import app from './app.js';
-import { ENV } from './config/env.js';
-import { initSocket } from './config/socket.js';
-import { checkDatabaseConnection } from './config/db.js';
 
-// Create the Node.js HTTP server
+import app from './expressApp.js';
+
+import { initSocket } from './config/socket.js';
+
+/*
+|--------------------------------------------------------------------------
+| HTTP SERVER
+|--------------------------------------------------------------------------
+|
+| IMPORTANT:
+| Socket.IO must be attached to the SAME HTTP server that Vercel serves.
+|
+*/
+
 const httpServer = http.createServer(app);
 
-// Initialize Socket.IO on the same HTTP server
-const io = initSocket(httpServer);
+/*
+|--------------------------------------------------------------------------
+| SOCKET.IO
+|--------------------------------------------------------------------------
+*/
 
-console.log('=========================================');
-console.log('🎮 BeTrueGamers Backend Initialized');
-console.log(`📡 Environment: ${ENV.NODE_ENV}`);
-console.log('⚡ Socket.IO Initialized');
-console.log('=========================================');
+initSocket(httpServer);
 
-// Check database connection
-checkDatabaseConnection();
+/*
+|--------------------------------------------------------------------------
+| LOCAL DEVELOPMENT
+|--------------------------------------------------------------------------
+|
+| Vercel handles the server itself.
+| We only call listen() when running locally.
+|
+*/
 
-// Vercel needs the HTTP server exported.
-// The server must not call listen() inside the Vercel environment.
-export default httpServer;
-
-// Local development only
 if (!process.env.VERCEL) {
-  const port = ENV.PORT || 5000;
+  const PORT = Number(process.env.PORT || 5000);
 
-  httpServer.listen(port, () => {
+  httpServer.listen(PORT, () => {
     console.log('=========================================');
-    console.log(`🎮 BeTrueGamers Server running on port ${port}`);
-    console.log(`🔗 API Base: http://localhost:${port}/api`);
-    console.log(`❤️ Health: http://localhost:${port}/health`);
-    console.log('⚡ Socket.IO Ready');
+    console.log(`🎮 BeTrueGamers Server running on port ${PORT}`);
+    console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 API Base: http://localhost:${PORT}/api`);
+    console.log(`⚡ Socket.IO Ready`);
     console.log('=========================================');
   });
 }
+
+/*
+|--------------------------------------------------------------------------
+| VERCEL ENTRYPOINT
+|--------------------------------------------------------------------------
+|
+| Vercel needs the actual HTTP server here so Socket.IO can
+| intercept /socket.io requests.
+|
+*/
+
+export default httpServer;
