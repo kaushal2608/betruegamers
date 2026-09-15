@@ -1,0 +1,19 @@
+import { PrismaClient } from '@prisma/client';
+import { ENV } from './env.js';
+
+// Instantiate PrismaClient
+export const prisma = new PrismaClient({
+  log: ENV.NODE_ENV === 'development' ? ['warn', 'error'] : ['error']
+});
+
+export const checkDatabaseConnection = async () => {
+  try {
+    await prisma.$queryRaw`SELECT 1 as connected`;
+    console.log(`[DB] Successfully connected to Supabase PostgreSQL via Prisma ORM.`);
+    return true;
+  } catch (err) {
+    console.log(`[DB Notice] Supabase PostgreSQL not reached (${err.message.split('\n')[0]}).`);
+    console.log(`[DB Notice] Add your Supabase credentials in backend/.env to connect live.`);
+    return false;
+  }
+};

@@ -1,0 +1,740 @@
+{
+  "timestamp": "2026-09-07T06:00:03.047Z",
+  "users": [
+    {
+      "id": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "email": "coach.alex@betruegamers.com",
+      "username": "CoachAlex",
+      "passwordHash": "$2a$10$omOMzXVEPbrWrFc3a26NMeN9eX7qwUYpxdH1e2/z4761rDem71I1W",
+      "role": "COACH",
+      "isVerified": true,
+      "isActive": true,
+      "isBlocked": false,
+      "avatarUrl": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
+      "bannerUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "lastLoginAt": "2026-09-05T10:34:47.324Z",
+      "createdAt": "2026-09-05T03:39:31.781Z",
+      "updatedAt": "2026-09-05T10:34:47.324Z",
+      "profile": {
+        "id": "f6988233-29e7-469f-a57e-096baad4ca2e",
+        "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+        "fullName": "Alex Mercer",
+        "bio": "Radiant tier Valorant coach specializing in tactical macro and duel mechanics.",
+        "discordTag": "AlexM#1337",
+        "steamId": null,
+        "riotId": "Alex#EUW",
+        "country": "Global",
+        "experienceLevel": "Pro",
+        "preferredLanguage": "English",
+        "achievements": [],
+        "createdAt": "2026-09-05T03:39:31.781Z",
+        "updatedAt": "2026-09-05T03:39:31.781Z"
+      }
+    },
+    {
+      "id": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "email": "admin@betruegamers.com",
+      "username": "BeTrueAdmin",
+      "passwordHash": "$2a$10$omOMzXVEPbrWrFc3a26NMeN9eX7qwUYpxdH1e2/z4761rDem71I1W",
+      "role": "ADMIN",
+      "isVerified": true,
+      "isActive": true,
+      "isBlocked": false,
+      "avatarUrl": "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=200&q=80",
+      "bannerUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "lastLoginAt": "2026-09-05T12:39:59.146Z",
+      "createdAt": "2026-09-05T03:39:27.073Z",
+      "updatedAt": "2026-09-05T12:39:59.147Z",
+      "profile": {
+        "id": "6eb98dc1-2e51-428c-a043-f2cb680cde15",
+        "userId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+        "fullName": "BeTrueGamers Master Admin",
+        "bio": "Platform administrator & esports director",
+        "discordTag": null,
+        "steamId": null,
+        "riotId": null,
+        "country": "Global",
+        "experienceLevel": "Pro",
+        "preferredLanguage": "English",
+        "achievements": [],
+        "createdAt": "2026-09-05T03:39:27.073Z",
+        "updatedAt": "2026-09-05T03:39:27.073Z"
+      }
+    },
+    {
+      "id": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "email": "coach.sarah@betruegamers.com",
+      "username": "NeoNova",
+      "passwordHash": "$2a$10$omOMzXVEPbrWrFc3a26NMeN9eX7qwUYpxdH1e2/z4761rDem71I1W",
+      "role": "USER",
+      "isVerified": true,
+      "isActive": true,
+      "isBlocked": false,
+      "avatarUrl": "https://res.cloudinary.com/dki0spoc1/image/upload/v1788759544/betruegamers/avatars/zgxdzezmeqmnaj7eo4km.png",
+      "bannerUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "lastLoginAt": "2026-09-05T10:28:37.951Z",
+      "createdAt": "2026-09-05T03:39:38.029Z",
+      "updatedAt": "2026-09-07T05:39:04.271Z",
+      "profile": {
+        "id": "520d9795-d94c-4085-89b8-71971652bc02",
+        "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+        "fullName": "Sarah Vance",
+        "bio": "Ex-semi-pro CS:GO/CS2 in-game leader. Master of utility lineups and rotation timing.",
+        "discordTag": null,
+        "steamId": "STEAM_0:1:456789",
+        "riotId": null,
+        "country": "Global",
+        "experienceLevel": "Semi-Pro",
+        "preferredLanguage": "English",
+        "achievements": [],
+        "createdAt": "2026-09-05T03:39:38.029Z",
+        "updatedAt": "2026-09-05T03:39:38.029Z"
+      }
+    },
+    {
+      "id": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "email": "kaushalyadav2695@gmail.com",
+      "username": "veerahir",
+      "passwordHash": "$2a$10$MXqGC1WvKfPKu1pZ1744y.RLSznAtOjommpRSZG6c82ldB4b494Iq",
+      "role": "USER",
+      "isVerified": true,
+      "isActive": true,
+      "isBlocked": false,
+      "avatarUrl": "https://res.cloudinary.com/dki0spoc1/image/upload/v1788760121/betruegamers/avatars/bsrt84v91glkll5bzutl.jpg",
+      "bannerUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "lastLoginAt": null,
+      "createdAt": "2026-09-07T05:07:38.842Z",
+      "updatedAt": "2026-09-07T05:48:40.922Z",
+      "profile": {
+        "id": "fe5af51b-2260-430c-abef-8b5d7bb461bf",
+        "userId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+        "fullName": "veerahir",
+        "bio": "Welcome to veerahir's BeTrueGamers profile.",
+        "discordTag": null,
+        "steamId": null,
+        "riotId": null,
+        "country": "Global",
+        "experienceLevel": "Intermediate",
+        "preferredLanguage": "English",
+        "achievements": [],
+        "createdAt": "2026-09-07T05:07:38.842Z",
+        "updatedAt": "2026-09-07T05:07:38.842Z"
+      }
+    }
+  ],
+  "games": [
+    {
+      "id": "5e0abf63-6180-4910-8777-d72b0a93bc8a",
+      "name": "Valorant",
+      "slug": "valorant",
+      "description": "A 5v5 character-based tactical FPS where precise gunplay meets unique agent abilities.",
+      "genre": "Tactical Shooter",
+      "platforms": [
+        "PC"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 2450000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:14.783Z",
+      "updatedAt": "2026-09-05T03:39:14.783Z"
+    },
+    {
+      "id": "f56e4d96-3a22-4953-89bf-8d7890e1fdba",
+      "name": "Counter-Strike 2",
+      "slug": "counter-strike-2",
+      "description": "The premier competitive tactical shooter rebuilt from the ground up on the Source 2 engine.",
+      "genre": "Competitive FPS",
+      "platforms": [
+        "PC"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1552824722-ddab1374e622?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1552824722-ddab1374e622?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 1820000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:16.831Z",
+      "updatedAt": "2026-09-05T03:39:16.831Z"
+    },
+    {
+      "id": "aa0f16dd-217e-495b-9671-4fe339e10c75",
+      "name": "Fortnite",
+      "slug": "fortnite",
+      "description": "Drop onto the Island and battle to be the last player or team standing in high-tempo build and no-build action.",
+      "genre": "Battle Royale",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1589241062272-c0a000072dfa?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1589241062272-c0a000072dfa?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 3100000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:18.675Z",
+      "updatedAt": "2026-09-05T03:39:18.675Z"
+    },
+    {
+      "id": "5f8ef768-6656-4a9a-9958-7ed4f58ade40",
+      "name": "Apex Legends",
+      "slug": "apex-legends",
+      "description": "Conquer with character in Apex Legends, a free-to-play Hero shooter where legendary competitors battle for glory.",
+      "genre": "Hero Shooter / BR",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 1200000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:20.722Z",
+      "updatedAt": "2026-09-05T03:39:20.722Z"
+    },
+    {
+      "id": "c2a13a1a-3f46-4033-939f-d5f3b87ffed9",
+      "name": "Grand Theft Auto V",
+      "slug": "gta-v",
+      "description": "Explore the vast open world of Los Santos, engage in high-stakes heists, and participate in competitive RP communities.",
+      "genre": "Action-Adventure / Roleplay",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 950000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:22.852Z",
+      "updatedAt": "2026-09-05T03:39:22.852Z"
+    },
+    {
+      "id": "b1284351-e90e-42f9-8c6e-0a3a0ce73d51",
+      "name": "Minecraft",
+      "slug": "minecraft",
+      "description": "Build, survive, compete in PvP mini-games, and conquer endless worlds with infinite possibilities.",
+      "genre": "Sandbox / Survival",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch",
+        "Mobile"
+      ],
+      "bannerUrl": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?auto=format&fit=crop&w=1200&q=80",
+      "iconUrl": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?auto=format&fit=crop&w=200&q=80",
+      "activePlayersCount": 4000000,
+      "isActive": true,
+      "createdAt": "2026-09-05T03:39:24.919Z",
+      "updatedAt": "2026-09-05T03:39:24.919Z"
+    }
+  ],
+  "coaches": [
+    {
+      "id": "dd4ad472-76f8-4866-aeec-407c11832ac1",
+      "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "headline": "Radiant #24 Peak | Pro VCT Analyst & Aim Coach",
+      "bio": "I have coached over 200+ students from Silver to Immortal. My sessions focus on screen-recorded VOD review, live gameplay screen-share coaching, crosshair discipline, and clutch mindset.",
+      "coachingExperienceYears": 5,
+      "hourlyRateUsd": "35",
+      "languages": [
+        "English"
+      ],
+      "isVerified": true,
+      "isAvailable": true,
+      "ratingAvg": "4.95",
+      "reviewCount": 48,
+      "totalSessionsCompleted": 156,
+      "createdAt": "2026-09-05T03:39:31.781Z",
+      "updatedAt": "2026-09-05T03:39:31.781Z",
+      "coachGames": [
+        {
+          "id": "54bf7ceb-2056-4b77-914a-b7b73d8c81d0",
+          "coachId": "dd4ad472-76f8-4866-aeec-407c11832ac1",
+          "gameId": "5e0abf63-6180-4910-8777-d72b0a93bc8a",
+          "highestRank": "Radiant",
+          "specialization": "Duelist / Crosshair Placement / VOD Review",
+          "sessionDurationMinutes": 60,
+          "createdAt": "2026-09-05T03:39:31.781Z"
+        }
+      ]
+    },
+    {
+      "id": "0deaf69b-44b2-464c-9b21-6f658958c64f",
+      "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "headline": "Global Elite / Faceit Level 10 | IGL & Utility Master",
+      "bio": "Transform your utility usage, map control, and post-plant setups. Screen share sessions with interactive callouts and live feedback.",
+      "coachingExperienceYears": 4,
+      "hourlyRateUsd": "30",
+      "languages": [
+        "English"
+      ],
+      "isVerified": true,
+      "isAvailable": true,
+      "ratingAvg": "5",
+      "reviewCount": 2,
+      "totalSessionsCompleted": 100,
+      "createdAt": "2026-09-05T03:39:38.029Z",
+      "updatedAt": "2026-09-05T12:30:42.279Z",
+      "coachGames": [
+        {
+          "id": "77d45b5e-dc55-40d5-8bde-dd419d1c8a97",
+          "coachId": "0deaf69b-44b2-464c-9b21-6f658958c64f",
+          "gameId": "f56e4d96-3a22-4953-89bf-8d7890e1fdba",
+          "highestRank": "Faceit Lvl 10",
+          "specialization": "IGL Tactics / Utility Lineups",
+          "sessionDurationMinutes": 60,
+          "createdAt": "2026-09-05T03:39:38.029Z"
+        }
+      ]
+    }
+  ],
+  "userGames": [],
+  "friendRequests": [
+    {
+      "id": "f68f377b-bf84-48d3-80ea-6f56579db43d",
+      "senderId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "receiverId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "status": "ACCEPTED",
+      "createdAt": "2026-09-05T04:19:04.725Z",
+      "updatedAt": "2026-09-05T04:26:44.218Z"
+    },
+    {
+      "id": "33e348f9-ee66-45e7-83c5-58f814084ad0",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "receiverId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "status": "ACCEPTED",
+      "createdAt": "2026-09-05T10:38:07.087Z",
+      "updatedAt": "2026-09-05T10:40:18.253Z"
+    },
+    {
+      "id": "3c5670da-e223-488f-acc3-8295760b704b",
+      "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "receiverId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "status": "ACCEPTED",
+      "createdAt": "2026-09-07T05:10:47.990Z",
+      "updatedAt": "2026-09-07T05:11:26.778Z"
+    }
+  ],
+  "friendships": [
+    {
+      "id": "fa8980fd-f6b9-43a8-b797-6a86c8243467",
+      "userId1": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "userId2": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "createdAt": "2026-09-05T04:26:44.218Z"
+    },
+    {
+      "id": "72082fca-e4c0-47ea-bbc7-7e24f0f74ada",
+      "userId1": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "userId2": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "createdAt": "2026-09-05T10:40:18.253Z"
+    },
+    {
+      "id": "74e879e4-f771-43a8-8405-81730ef68379",
+      "userId1": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "userId2": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "createdAt": "2026-09-07T05:11:26.778Z"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "caee03aa-b844-400d-842f-cb4345a81653",
+      "title": null,
+      "isGroup": false,
+      "lastMessageAt": "2026-09-05T11:25:51.786Z",
+      "createdAt": "2026-09-05T04:28:37.047Z",
+      "updatedAt": "2026-09-05T11:25:51.787Z",
+      "members": [
+        {
+          "id": "296e8d5e-35e9-4645-912a-70dd36abcdb6",
+          "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+          "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+          "joinedAt": "2026-09-05T04:28:37.047Z",
+          "lastReadAt": "2026-09-05T12:41:59.871Z"
+        },
+        {
+          "id": "9608db84-ba7f-4d9d-91d6-09085857aa84",
+          "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+          "userId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+          "joinedAt": "2026-09-05T04:28:37.047Z",
+          "lastReadAt": "2026-09-07T05:03:47.380Z"
+        }
+      ]
+    },
+    {
+      "id": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "title": null,
+      "isGroup": false,
+      "lastMessageAt": "2026-09-05T11:45:26.121Z",
+      "createdAt": "2026-09-05T10:43:08.513Z",
+      "updatedAt": "2026-09-05T11:45:26.125Z",
+      "members": [
+        {
+          "id": "71bd7d12-36e8-499f-89a7-96812e46b279",
+          "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+          "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+          "joinedAt": "2026-09-05T10:43:08.513Z",
+          "lastReadAt": "2026-09-05T11:45:32.890Z"
+        },
+        {
+          "id": "14e20e58-129f-4961-8ebd-a13d4bc56e59",
+          "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+          "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+          "joinedAt": "2026-09-05T10:43:08.513Z",
+          "lastReadAt": "2026-09-05T12:45:25.246Z"
+        }
+      ]
+    },
+    {
+      "id": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "title": null,
+      "isGroup": false,
+      "lastMessageAt": "2026-09-07T05:16:42.157Z",
+      "createdAt": "2026-09-07T05:15:07.456Z",
+      "updatedAt": "2026-09-07T05:16:42.158Z",
+      "members": [
+        {
+          "id": "a5cb17a1-7699-4e2d-bcf1-4e8d0edbdf1b",
+          "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+          "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+          "joinedAt": "2026-09-07T05:15:07.456Z",
+          "lastReadAt": "2026-09-07T05:45:15.438Z"
+        },
+        {
+          "id": "c4ee2b9c-f0fc-4492-b68d-1ba87cd32b89",
+          "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+          "userId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+          "joinedAt": "2026-09-07T05:15:07.456Z",
+          "lastReadAt": "2026-09-07T05:50:43.323Z"
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "6eb0f634-e494-49dc-9527-954000458cc8",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "content": "hiii admin i am new caoch here",
+      "createdAt": "2026-09-05T04:29:12.377Z"
+    },
+    {
+      "id": "dec2c9dc-fb60-42c5-9c25-d7cea7cb5304",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "sir kidding me i am caoch and you are admin",
+      "createdAt": "2026-09-05T04:30:18.933Z"
+    },
+    {
+      "id": "64344ad6-ef62-4711-ae3a-24f33743a8ad",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "hello nova",
+      "createdAt": "2026-09-05T10:43:51.409Z"
+    },
+    {
+      "id": "d6dd1336-6e3e-4a75-afee-e54734d8936e",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "hi alex",
+      "createdAt": "2026-09-05T10:44:29.280Z"
+    },
+    {
+      "id": "6286e7f5-6dc2-4a3e-81a3-8c24d6ea8db7",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "how are you",
+      "createdAt": "2026-09-05T10:54:22.646Z"
+    },
+    {
+      "id": "fa02aac4-4e75-4b6b-a891-2cc1d55f3459",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "kyaa kr rahi ho",
+      "createdAt": "2026-09-05T11:04:44.300Z"
+    },
+    {
+      "id": "7ef167e8-bed3-4c62-9ebf-4dfef083115d",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "hello sir main testing kr raha hu",
+      "createdAt": "2026-09-05T11:22:13.708Z"
+    },
+    {
+      "id": "934338a2-3239-4854-bbae-6782148e7076",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "jhdscng",
+      "createdAt": "2026-09-05T11:24:00.688Z"
+    },
+    {
+      "id": "e2177f66-c576-49d3-b22d-3239728e466b",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "ythegdhsfngcbiwkdhkcj",
+      "createdAt": "2026-09-05T11:24:25.978Z"
+    },
+    {
+      "id": "91c618ae-bbef-421f-92e9-e818ec10c848",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "content": "jhf,jdgh,jvefo;lv",
+      "createdAt": "2026-09-05T11:24:44.819Z"
+    },
+    {
+      "id": "b37d9c3e-0351-4626-adaa-e4b8a13074af",
+      "conversationId": "caee03aa-b844-400d-842f-cb4345a81653",
+      "senderId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "content": "hi",
+      "createdAt": "2026-09-05T11:25:49.328Z"
+    },
+    {
+      "id": "8ae58741-3080-4e8b-91ee-fcb89c4a1af1",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "content": "hiii where are you",
+      "createdAt": "2026-09-05T11:44:48.798Z"
+    },
+    {
+      "id": "edfa2c88-5669-4700-84a8-e33dcdb61eba",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "i am here",
+      "createdAt": "2026-09-05T11:45:16.852Z"
+    },
+    {
+      "id": "553282bd-b8fe-49d1-89ef-f3e7db7d0292",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "do db",
+      "createdAt": "2026-09-05T11:45:19.104Z"
+    },
+    {
+      "id": "0ea4ba5f-e031-4437-82ed-c09d1a263ed1",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "you kdv'",
+      "createdAt": "2026-09-05T11:45:22.182Z"
+    },
+    {
+      "id": "c0302a30-e6b0-4836-b9d4-6159c9ea84ee",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "hsdvjc",
+      "createdAt": "2026-09-05T11:45:22.906Z"
+    },
+    {
+      "id": "69e0688e-91b8-4113-9ab4-f6d123d9aae1",
+      "conversationId": "63d30094-0251-4206-a9be-f300fc655a1e",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "kjsdjvhc",
+      "createdAt": "2026-09-05T11:45:24.093Z"
+    },
+    {
+      "id": "e606462b-41e7-4732-a1e9-366ec7ea03cc",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "content": "hello",
+      "createdAt": "2026-09-07T05:15:31.509Z"
+    },
+    {
+      "id": "46d1f796-1cff-41af-a93a-2c904ab6c0c8",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "content": "nhj",
+      "createdAt": "2026-09-07T05:15:32.218Z"
+    },
+    {
+      "id": "2b8cc18b-f764-409f-a356-bb90cb28eea7",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "content": "ekfsjcvhx",
+      "createdAt": "2026-09-07T05:15:35.084Z"
+    },
+    {
+      "id": "a1069650-2faa-4b93-ad07-e57f8c66a233",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "content": "kefsjcvh",
+      "createdAt": "2026-09-07T05:15:35.904Z"
+    },
+    {
+      "id": "c78a5475-a824-49fe-96d5-9361415f4757",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "ekrhfjkk",
+      "createdAt": "2026-09-07T05:16:38.164Z"
+    },
+    {
+      "id": "30616dde-6546-495a-88dd-0d86801c526b",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "kebgjh",
+      "createdAt": "2026-09-07T05:16:38.984Z"
+    },
+    {
+      "id": "6a176dd9-5c00-48f2-90f1-221cb95e3357",
+      "conversationId": "ee20c593-89d9-4104-8555-f93240f58ca0",
+      "senderId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "content": "lkejrgdhj",
+      "createdAt": "2026-09-07T05:16:39.803Z"
+    }
+  ],
+  "coachingSessions": [
+    {
+      "id": "e8adc490-6c46-4c22-bd6e-042ecccc7320",
+      "gamerId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "coachId": "0deaf69b-44b2-464c-9b21-6f658958c64f",
+      "gameId": "f56e4d96-3a22-4953-89bf-8d7890e1fdba",
+      "status": "COMPLETED",
+      "scheduledAt": null,
+      "startedAt": null,
+      "endedAt": "2026-09-05T11:54:17.926Z",
+      "durationMinutes": 60,
+      "goals": "i want session",
+      "notes": null,
+      "createdAt": "2026-09-05T11:49:42.002Z",
+      "updatedAt": "2026-09-05T11:54:17.925Z"
+    },
+    {
+      "id": "fc146a1a-267d-419a-9d36-06c21685f227",
+      "gamerId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "coachId": "0deaf69b-44b2-464c-9b21-6f658958c64f",
+      "gameId": "f56e4d96-3a22-4953-89bf-8d7890e1fdba",
+      "status": "COMPLETED",
+      "scheduledAt": "2026-09-05T12:31:00.000Z",
+      "startedAt": null,
+      "endedAt": "2026-09-05T12:31:05.011Z",
+      "durationMinutes": 90,
+      "goals": "please confirm",
+      "notes": null,
+      "createdAt": "2026-09-05T12:28:28.915Z",
+      "updatedAt": "2026-09-05T12:31:05.025Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1dd91a00-2644-44fe-970b-39751b3323e6",
+      "userId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+      "type": "FRIEND_ACCEPTED",
+      "title": "Friend Request Accepted",
+      "message": "CoachAlex accepted your friend request!",
+      "data": {
+        "friendId": "e89a127e-b820-41d7-adfc-f62285123fce",
+        "username": "CoachAlex"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T04:26:48.545Z"
+    },
+    {
+      "id": "73e4aa72-9b07-4bcc-a4ee-87857b8ae04d",
+      "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "type": "FRIEND_REQUEST",
+      "title": "New Friend Request",
+      "message": "BeTrueAdmin sent you a friend request!",
+      "data": {
+        "senderId": "c0de43c1-2365-4ae9-83b4-d256abc6b953",
+        "username": "BeTrueAdmin",
+        "requestId": "f68f377b-bf84-48d3-80ea-6f56579db43d"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T04:19:06.711Z"
+    },
+    {
+      "id": "69648bfa-21cd-4db0-bc98-2a15f3a1fcdd",
+      "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "type": "FRIEND_ACCEPTED",
+      "title": "Friend Request Accepted",
+      "message": "NeoNova accepted your friend request!",
+      "data": {
+        "friendId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+        "username": "NeoNova"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T10:40:22.087Z"
+    },
+    {
+      "id": "ee2b6cf5-0836-41b9-aeb0-433319172ee3",
+      "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "type": "FRIEND_REQUEST",
+      "title": "New Friend Request",
+      "message": "CoachAlex sent you a friend request!",
+      "data": {
+        "senderId": "e89a127e-b820-41d7-adfc-f62285123fce",
+        "username": "CoachAlex",
+        "requestId": "33e348f9-ee66-45e7-83c5-58f814084ad0"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T10:38:09.032Z"
+    },
+    {
+      "id": "61f30fea-875e-4408-983c-8674a5b9c218",
+      "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "type": "COACHING_REQUEST",
+      "title": "New Coaching Session Request",
+      "message": "CoachAlex requested a 60-min coaching session!",
+      "data": {
+        "gamerId": "e89a127e-b820-41d7-adfc-f62285123fce",
+        "sessionId": "e8adc490-6c46-4c22-bd6e-042ecccc7320"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T11:49:49.616Z"
+    },
+    {
+      "id": "d5e01b71-6902-4455-acf2-14dd8f9252b4",
+      "userId": "e89a127e-b820-41d7-adfc-f62285123fce",
+      "type": "COACHING_ACCEPTED",
+      "title": "Coaching Session Approved!",
+      "message": "Your coaching session for Counter-Strike 2 has been approved! You can open the session now.",
+      "data": {
+        "sessionId": "fc146a1a-267d-419a-9d36-06c21685f227"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T12:29:29.176Z"
+    },
+    {
+      "id": "c4e1c9a8-7b0e-4bbd-861c-a5e588e5de86",
+      "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "type": "COACHING_REQUEST",
+      "title": "New Coaching Session Request",
+      "message": "CoachAlex requested a 90-min session for 5 Sept 2026, 6:01 pm!",
+      "data": {
+        "gamerId": "e89a127e-b820-41d7-adfc-f62285123fce",
+        "sessionId": "fc146a1a-267d-419a-9d36-06c21685f227",
+        "scheduledAt": "2026-09-05T12:31:00.000Z"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-05T12:28:37.079Z"
+    },
+    {
+      "id": "381100c7-e9a6-4af7-8219-0c2a5dc283db",
+      "userId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+      "type": "FRIEND_REQUEST",
+      "title": "New Friend Request",
+      "message": "veerahir sent you a friend request!",
+      "data": {
+        "senderId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+        "username": "veerahir",
+        "requestId": "3c5670da-e223-488f-acc3-8295760b704b"
+      },
+      "isRead": false,
+      "createdAt": "2026-09-07T05:10:50.434Z"
+    },
+    {
+      "id": "9e117dd1-3e59-45e8-9892-3c2eecae1b83",
+      "userId": "8ebd409b-9e7d-4f33-bdef-80a58f15480f",
+      "type": "FRIEND_ACCEPTED",
+      "title": "Friend Request Accepted",
+      "message": "NeoNova accepted your friend request!",
+      "data": {
+        "friendId": "3aebab68-5985-4e33-8b9e-769e39bc2192",
+        "username": "NeoNova"
+      },
+      "isRead": true,
+      "createdAt": "2026-09-07T05:11:30.675Z"
+    }
+  ]
+}

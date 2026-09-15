@@ -1,0 +1,402 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  COACH
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+enum SessionStatus {
+  REQUESTED
+  ACCEPTED
+  READY
+  LIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum NotificationType {
+  FRIEND_REQUEST
+  FRIEND_ACCEPTED
+  COACHING_REQUEST
+  COACHING_ACCEPTED
+  COACHING_START
+  CHAT_MESSAGE
+  SYSTEM
+}
+
+enum ParticipantRole {
+  GAMER
+  COACH
+}
+
+enum ReportStatus {
+  OPEN
+  INVESTIGATING
+  RESOLVED
+  DISMISSED
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique @db.VarChar(255)
+  username     String    @unique @db.VarChar(50)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  role         Role      @default(USER)
+  isVerified   Boolean   @default(false) @map("is_verified")
+  isActive     Boolean   @default(true) @map("is_active")
+  isBlocked    Boolean   @default(false) @map("is_blocked")
+  avatarUrl    String?   @default("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80") @map("avatar_url")
+  bannerUrl    String?   @default("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80") @map("banner_url")
+  lastLoginAt  DateTime? @map("last_login_at") @db.Timestamptz
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  profile               UserProfile?
+  coach                 Coach?
+  userGames             UserGame[]
+  sentFriendRequests    FriendRequest[]              @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[]             @relation("ReceivedFriendRequests")
+  friendshipsAsUser1    Friendship[]                 @relation("FriendshipsUser1")
+  friendshipsAsUser2    Friendship[]                 @relation("FriendshipsUser2")
+  conversationMembers   ConversationMember[]
+  messages              Message[]
+  messageReads          MessageRead[]
+  notifications         Notification[]
+  gamerSessions         CoachingSession[]            @relation("GamerSessions")
+  sessionParticipants   CoachingSessionParticipant[]
+  reviews               Review[]                     @relation("GamerReviews")
+  reportsCreated        Report[]                     @relation("ReporterUser")
+  reportsAgainst        Report[]                     @relation("ReportedUser")
+
+  @@index([role])
+  @@index([username])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model OtpVerification {
+  id          String   @id @default(uuid()) @db.Uuid
+  email       String   @db.VarChar(255)
+  otpCode     String   @map("otp_code") @db.VarChar(6)
+  type        String   @default("SIGNUP") @db.VarChar(50)
+  attempts    Int      @default(0)
+  maxAttempts Int      @default(5) @map("max_attempts")
+  expiresAt   DateTime @map("expires_at") @db.Timestamptz
+  isConsumed  Boolean  @default(false) @map("is_consumed")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([email])
+  @@map("otp_verifications")
+}
+
+model UserProfile {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @unique @map("user_id") @db.Uuid
+  fullName          String?  @map("full_name") @db.VarChar(100)
+  bio               String?  @default("Gamer on BeTrueGamers.")
+  discordTag        String?  @map("discord_tag") @db.VarChar(100)
+  steamId           String?  @map("steam_id") @db.VarChar(100)
+  riotId            String?  @map("riot_id") @db.VarChar(100)
+  country           String?  @default("Global") @db.VarChar(100)
+  experienceLevel   String?  @default("Intermediate") @map("experience_level") @db.VarChar(50)
+  preferredLanguage String?  @default("English") @map("preferred_language") @db.VarChar(50)
+  theme             String?  @default("dark") @db.VarChar(20)
+  achievements      Json?    @default("[]")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Game {
+  id                 String   @id @default(uuid()) @db.Uuid
+  name               String   @unique @db.VarChar(100)
+  slug               String   @unique @db.VarChar(100)
+  description        String?
+  genre              String   @db.VarChar(100)
+  platforms          String[] @default(["PC"])
+  bannerUrl          String?  @map("banner_url")
+  iconUrl            String?  @map("icon_url")
+  activePlayersCount Int      @default(0) @map("active_players_count")
+  isActive           Boolean  @default(true) @map("is_active")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  userGames        UserGame[]
+  coachGames       CoachGame[]
+  coachingSessions CoachingSession[]
+
+  @@index([genre, isActive])
+  @@index([activePlayersCount])
+  @@map("games")
+}
+
+model UserGame {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  gameId      String   @map("game_id") @db.Uuid
+  inGameRank  String?  @default("Unranked") @map("in_game_rank") @db.VarChar(100)
+  mainRole    String?  @default("All-Rounder") @map("main_role") @db.VarChar(100)
+  hoursPlayed Int      @default(0) @map("hours_played")
+  isFavorite  Boolean  @default(false) @map("is_favorite")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, gameId])
+  @@index([userId])
+  @@index([gameId])
+  @@map("user_games")
+}
+
+model Coach {
+  id                      String   @id @default(uuid()) @db.Uuid
+  userId                  String   @unique @map("user_id") @db.Uuid
+  headline                String   @db.VarChar(255)
+  bio                     String
+  coachingExperienceYears Int      @default(1) @map("coaching_experience_years")
+  hourlyRateUsd           Decimal  @default(25.00) @map("hourly_rate_usd") @db.Decimal(10, 2)
+  languages               String[] @default(["English"])
+  isVerified              Boolean  @default(false) @map("is_verified")
+  isAvailable             Boolean  @default(true) @map("is_available")
+  ratingAvg               Decimal  @default(5.00) @map("rating_avg") @db.Decimal(3, 2)
+  reviewCount             Int      @default(0) @map("review_count")
+  totalSessionsCompleted  Int      @default(0) @map("total_sessions_completed")
+  createdAt               DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt               DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coachGames       CoachGame[]
+  coachingSessions CoachingSession[]
+  reviews          Review[]
+
+  @@index([userId])
+  @@index([isAvailable, ratingAvg])
+  @@index([isVerified])
+  @@map("coaches")
+}
+
+model CoachGame {
+  id                     String   @id @default(uuid()) @db.Uuid
+  coachId                String   @map("coach_id") @db.Uuid
+  gameId                 String   @map("game_id") @db.Uuid
+  highestRank            String   @map("highest_rank") @db.VarChar(100)
+  specialization         String?  @db.VarChar(255)
+  sessionDurationMinutes Int      @default(60) @map("session_duration_minutes")
+  createdAt              DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  coach Coach @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  game  Game  @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([coachId, gameId])
+  @@map("coach_games")
+}
+
+model FriendRequest {
+  id         String        @id @default(uuid()) @db.Uuid
+  senderId   String        @map("sender_id") @db.Uuid
+  receiverId String        @map("receiver_id") @db.Uuid
+  status     RequestStatus @default(PENDING)
+  createdAt  DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  sender   User @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@index([receiverId, status])
+  @@map("friend_requests")
+}
+
+model Friendship {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId1   String   @map("user_id_1") @db.Uuid
+  userId2   String   @map("user_id_2") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user1 User @relation("FriendshipsUser1", fields: [userId1], references: [id], onDelete: Cascade)
+  user2 User @relation("FriendshipsUser2", fields: [userId2], references: [id], onDelete: Cascade)
+
+  @@unique([userId1, userId2])
+  @@index([userId1])
+  @@index([userId2])
+  @@map("friendships")
+}
+
+model Conversation {
+  id            String   @id @default(uuid()) @db.Uuid
+  title         String?  @db.VarChar(255)
+  isGroup       Boolean  @default(false) @map("is_group")
+  lastMessageAt DateTime @default(now()) @map("last_message_at") @db.Timestamptz
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  members  ConversationMember[]
+  messages Message[]
+
+  @@index([lastMessageAt])
+  @@map("conversations")
+}
+
+model ConversationMember {
+  id             String   @id @default(uuid()) @db.Uuid
+  conversationId String   @map("conversation_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  joinedAt       DateTime @default(now()) @map("joined_at") @db.Timestamptz
+  lastReadAt     DateTime @default(now()) @map("last_read_at") @db.Timestamptz
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@index([userId, lastReadAt])
+  @@map("conversation_members")
+}
+
+model Message {
+  id             String   @id @default(uuid()) @db.Uuid
+  conversationId String   @map("conversation_id") @db.Uuid
+  senderId       String   @map("sender_id") @db.Uuid
+  content        String
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  conversation Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  reads        MessageRead[]
+
+  @@index([conversationId, createdAt])
+  @@index([senderId])
+  @@map("messages")
+}
+
+model MessageRead {
+  id        String   @id @default(uuid()) @db.Uuid
+  messageId String   @map("message_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  readAt    DateTime @default(now()) @map("read_at") @db.Timestamptz
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+  @@map("message_reads")
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  type      NotificationType
+  title     String           @db.VarChar(255)
+  message   String
+  data      Json?            @default("{}")
+  isRead    Boolean          @default(false) @map("is_read")
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+  @@map("notifications")
+}
+
+model CoachingSession {
+  id              String        @id @default(uuid()) @db.Uuid
+  gamerId         String        @map("gamer_id") @db.Uuid
+  coachId         String        @map("coach_id") @db.Uuid
+  gameId          String        @map("game_id") @db.Uuid
+  status          SessionStatus @default(REQUESTED)
+  scheduledAt     DateTime?     @map("scheduled_at") @db.Timestamptz
+  startedAt       DateTime?     @map("started_at") @db.Timestamptz
+  endedAt         DateTime?     @map("ended_at") @db.Timestamptz
+  durationMinutes Int           @default(60) @map("duration_minutes")
+  goals           String?
+  notes           String?
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  gamer        User                         @relation("GamerSessions", fields: [gamerId], references: [id], onDelete: Cascade)
+  coach        Coach                        @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  game         Game                         @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  participants CoachingSessionParticipant[]
+  review       Review?
+
+  @@index([gamerId])
+  @@index([coachId])
+  @@index([status])
+  @@index([gamerId, status])
+  @@index([coachId, status])
+  @@index([scheduledAt])
+  @@map("coaching_sessions")
+}
+
+model CoachingSessionParticipant {
+  id              String          @id @default(uuid()) @db.Uuid
+  sessionId       String          @map("session_id") @db.Uuid
+  userId          String          @map("user_id") @db.Uuid
+  role            ParticipantRole
+  isInCall        Boolean         @default(false) @map("is_in_call")
+  isSharingScreen Boolean         @default(false) @map("is_sharing_screen")
+  joinedAt        DateTime?       @map("joined_at") @db.Timestamptz
+  leftAt          DateTime?       @map("left_at") @db.Timestamptz
+
+  session CoachingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@map("coaching_session_participants")
+}
+
+model Review {
+  id         String   @id @default(uuid()) @db.Uuid
+  sessionId  String   @unique @map("session_id") @db.Uuid
+  coachId    String   @map("coach_id") @db.Uuid
+  gamerId    String   @map("gamer_id") @db.Uuid
+  rating     Int
+  reviewText String?  @map("review_text")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  session CoachingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  coach   Coach           @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  gamer   User            @relation("GamerReviews", fields: [gamerId], references: [id], onDelete: Cascade)
+
+  @@index([coachId])
+  @@map("reviews")
+}
+
+model Report {
+  id             String       @id @default(uuid()) @db.Uuid
+  reporterId     String       @map("reporter_id") @db.Uuid
+  reportedUserId String?      @map("reported_user_id") @db.Uuid
+  reason         String       @db.VarChar(100)
+  description    String?
+  status         ReportStatus @default(OPEN)
+  adminNotes     String?      @map("admin_notes")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+
+  reporter     User  @relation("ReporterUser", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser User? @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("reports")
+}

@@ -1,0 +1,18 @@
+export const notFoundHandler = (req, res, next) => {
+  const error = new Error(`Resource Not Found - ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+};
+
+export const errorHandler = (err, req, res, next) => {
+  const statusCode = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
+  console.error(`[API Error] [${req.method} ${req.url}]:`, err.message || err);
+
+
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    errors: err.errors || null
+  });
+};
